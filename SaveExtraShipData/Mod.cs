@@ -8,7 +8,7 @@ namespace SaveExtraShipData
 
         public override string Author => "Dragon";
 
-        public override string Name => "Rename Me";
+        public override string Name => "SaveExtraShipData";
 
         public override string HarmonyIdentifier()
         {
