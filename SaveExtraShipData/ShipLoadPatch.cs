@@ -1,9 +1,10 @@
 ﻿using HarmonyLib;
+using PulsarModLoader.Utilities;
 using System.Collections.Generic;
 
 namespace SaveExtraShipData
 {
-    [HarmonyPatch(typeof(PLServer), "SpawnPlayerShipFromSaveData")]
+    [HarmonyPatch(typeof(PLGlobal), "EnterNewGame")]
     internal class ShipLoadPatch
     {
         static void Postfix()
@@ -70,9 +71,9 @@ namespace SaveExtraShipData
             if (SaveExtraShipData.SaveNuclearDeviceStatus)
             {
                 playership.NuclearLaunchStage = SaveExtraShipData.CachedDataInstance.NuclearDeviceLaunchStage;
-                foreach(PLNuclearDevice item in playership.MyStats.GetSlot(ESlotType.E_COMP_NUCLEARDEVICE))
+                foreach (PLNuclearDevice item in playership.MyStats.GetSlot(ESlotType.E_COMP_NUCLEARDEVICE))
                 {
-                    if(item.SubType == SaveExtraShipData.CachedDataInstance.Loadedtype && item.Level == SaveExtraShipData.CachedDataInstance.Loadedlevel)
+                    if (item.SubType == SaveExtraShipData.CachedDataInstance.Loadedtype && item.Level == SaveExtraShipData.CachedDataInstance.Loadedlevel)
                     {
                         playership.LoadedNuclearDevice = item;
                         break;
@@ -137,6 +138,10 @@ namespace SaveExtraShipData
             if (SaveExtraShipData.SaveCaptainOrder)
             {
                 PLServer.Instance.CaptainsOrdersID = SaveExtraShipData.CachedDataInstance.CaptainOrderID;
+            }
+            if (!SaveExtraShipData.SavePerFile)
+            {
+                SaveExtraShipData.LoadGlobalSettings();
             }
         }
     }

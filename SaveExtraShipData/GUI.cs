@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static UnityEngine.GUILayout;
+﻿using static UnityEngine.GUILayout;
 
 namespace SaveExtraShipData
 {
@@ -25,6 +20,7 @@ namespace SaveExtraShipData
 
         public override void Draw()
         {
+            BeginHorizontal();
             if (Button("Save settings to this game file:" + (SaveExtraShipData.SavePerFile ? "<color=blue>On</color>" : "<color=blue>Off</color>")))
             {
                 SaveExtraShipData.SavePerFile = !SaveExtraShipData.SavePerFile;
@@ -34,6 +30,7 @@ namespace SaveExtraShipData
                 }
             }
             GlobalConfigSettings.SavePerFileDefault.Value = Toggle(GlobalConfigSettings.SavePerFileDefault.Value, "Default");
+            EndHorizontal();
 
             if (Button("Save O2 Level:" + (SaveExtraShipData.SaveO2Level ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
