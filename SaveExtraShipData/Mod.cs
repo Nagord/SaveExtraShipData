@@ -4,6 +4,14 @@ namespace SaveExtraShipData
 {
     public class Mod : PulsarMod
     {
+        public Mod()
+        {
+            if (!SaveExtraShipData.SavePerFile)
+            {
+                SaveExtraShipData.LoadGlobalSettings();
+            }
+        }
+
         public override string Version => "0.0.1";
 
         public override string Author => "Dragon";

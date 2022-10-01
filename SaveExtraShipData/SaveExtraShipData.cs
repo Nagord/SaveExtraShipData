@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using PulsarModLoader.Utilities;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UnityEngine;
 
 namespace SaveExtraShipData
 {
     public class SaveExtraShipData : PulsarModLoader.SaveData.PMLSaveData
     {
-        public static bool LoadingData = false;
         public static bool SavePerFile = GlobalConfigSettings.SavePerFileDefault;
         public static bool SaveO2Level = true;
         public static bool SaveBiohazardLevel = true;
@@ -29,6 +30,12 @@ namespace SaveExtraShipData
         public static bool SaveWarpTargets = true;
         public static bool SaveCrewAllowance = true;
         public static bool SaveCaptainOrder = true;
+        public static bool SaveCoolantPumpRate = true;
+        public static bool SaveDistressSignal = true;
+        public static bool SaveBlindJumpLock = true;
+        public static bool SaveAmmoBoxSupply = true;
+        public static bool SaveReactorHeat = true;
+        public static bool SaveShipPosition = true;
 
         public static CachedData CachedDataInstance = null;
         public class CachedData
@@ -62,7 +69,15 @@ namespace SaveExtraShipData
             public int WarpChargeStage = 0;
             public float[] WarpCharge = new float[3];
             public int[] CourseGoals = new int[0];
-            public int CaptainOrderID = 0;
+            public int CaptainOrderID = 1;
+            public byte CoolantPumpRate = 0;
+            public byte DistressSignalType = 0;
+            public bool DistressSignalActive = false;
+            public bool BlindJumpUnlocked = false;
+            public float[] AmmoSupplys;
+            public float ReactorHeat;
+            public Vector3 ShipPosition;
+            public Quaternion ShipRotation;
         }
 
         public static void LoadGlobalSettings()
@@ -95,9 +110,9 @@ namespace SaveExtraShipData
             return "SaveExtraShipData";
         }
 
-        public override void LoadData(MemoryStream dataStream, uint VersionID)
+        public override void LoadData(byte[] dataStream, uint VersionID)
         {
-            using (BinaryReader reader = new BinaryReader(dataStream))
+            using (BinaryReader reader = new BinaryReader(new MemoryStream(dataStream)))
             {
                 CachedDataInstance = new CachedData();
                 SavePerFile = reader.ReadBoolean();                           //bool SavePerFile
@@ -193,6 +208,7 @@ namespace SaveExtraShipData
                         int target = reader.ReadInt32();                      //int
                         items.Add(hash, target);
                     }
+                    CachedDataInstance.items = items;
                 }
                 SaveO2Level = reader.ReadBoolean();                           //bool Save02Level
                 if (SaveO2Level)
@@ -237,11 +253,47 @@ namespace SaveExtraShipData
                 {
                     CachedDataInstance.CaptainOrderID = reader.ReadInt32();   //int
                 }
-                LoadingData = true;
+                SaveCoolantPumpRate = reader.ReadBoolean();                   //bool SaveCoolantPumpRate
+                if (SaveCoolantPumpRate)
+                {
+                    CachedDataInstance.CoolantPumpRate = reader.ReadByte();   //byte
+                }
+                SaveDistressSignal = reader.ReadBoolean();                    //bool SaveDistressSignal
+                if (SaveDistressSignal)
+                {
+                    CachedDataInstance.DistressSignalType = reader.ReadByte();     //byte
+                    CachedDataInstance.DistressSignalActive = reader.ReadBoolean();//bool
+                }
+                SaveBlindJumpLock = reader.ReadBoolean();                     //bool SaveBlindJumpLock
+                if (SaveBlindJumpLock)
+                {
+                    CachedDataInstance.BlindJumpUnlocked = reader.ReadBoolean();//bool
+                }
+                SaveAmmoBoxSupply = reader.ReadBoolean();                     //bool SaveAmmoBoxSupply
+                if (SaveAmmoBoxSupply)
+                {
+                    int ammoboxes = reader.ReadInt32();                       //int
+                    CachedDataInstance.AmmoSupplys = new float[ammoboxes];
+                    for (int i = 0; i < ammoboxes; i++)
+                    {
+                        CachedDataInstance.AmmoSupplys[i] = reader.ReadSingle();  //float
+                    }
+                }
+                SaveReactorHeat = reader.ReadBoolean();                       //bool SaveReactorHeat
+                if (SaveReactorHeat)
+                {
+                    CachedDataInstance.ReactorHeat = reader.ReadSingle();     //float
+                }
+                SaveShipPosition = reader.ReadBoolean();                      //bool SaveShipPosition
+                if (SaveShipPosition)
+                {
+                    CachedDataInstance.ShipPosition = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                    CachedDataInstance.ShipRotation = new Quaternion(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                }
             }
         }
 
-        public override MemoryStream SaveData()
+        public override byte[] SaveData()
         {
             PLShipInfo playerShip = PLEncounterManager.Instance.PlayerShip;
             if (!SavePerFile) //Set settings to Global before saving.
@@ -396,8 +448,49 @@ namespace SaveExtraShipData
                 {
                     writer.Write(PLServer.Instance.CaptainsOrdersID);//int
                 }
+                writer.Write(SaveCoolantPumpRate);          //bool SaveCoolantPumpRate
+                if (SaveCoolantPumpRate)
+                {
+                    writer.Write((byte)playerShip.ReactorCoolingPumpState);//byte
+                }
+                writer.Write(SaveDistressSignal);           //bool SaveDistressSignal
+                if (SaveDistressSignal)
+                {
+                    writer.Write((byte)playerShip.MyStats.GetComponentFromNetID(playerShip.SelectedDistressSignalNetID).SubType);
+                    writer.Write(playerShip.DistressSignalActive);
+                }
+                writer.Write(SaveBlindJumpLock);            //bool SaveBlindJumpLock
+                if (SaveBlindJumpLock)
+                {
+                    writer.Write(playerShip.BlindJumpUnlocked);//bool
+                }
+                writer.Write(SaveAmmoBoxSupply);            //bool SaveAmmoBoxSupply
+                if (SaveAmmoBoxSupply)
+                {
+                    writer.Write(playerShip.MyAmmoRefills.Length);
+                    foreach(PLAmmoRefill ammobox in playerShip.MyAmmoRefills)
+                    {
+                        writer.Write(ammobox.SupplyAmount);
+                    }
+                }
+                writer.Write(SaveReactorHeat);              //bool SaveReactorHeat
+                if (SaveReactorHeat)
+                {
+                    writer.Write(playerShip.MyStats.ReactorTempCurrent);
+                }
+                writer.Write(SaveShipPosition);             //bool SaveShipPosition
+                if (SaveShipPosition)
+                {
+                    writer.Write(playerShip.ExteriorRigidbody.position.x);
+                    writer.Write(playerShip.ExteriorRigidbody.position.y);
+                    writer.Write(playerShip.ExteriorRigidbody.position.z);
+                    writer.Write(playerShip.ExteriorRigidbody.rotation.x);
+                    writer.Write(playerShip.ExteriorRigidbody.rotation.y);
+                    writer.Write(playerShip.ExteriorRigidbody.rotation.z);
+                    writer.Write(playerShip.ExteriorRigidbody.rotation.w);
+                }
             }
-            return myStream;
+            return myStream.ToArray();
         }
     }
 }

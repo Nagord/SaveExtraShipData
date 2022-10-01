@@ -26,5 +26,11 @@ namespace SaveExtraShipData
         public static SaveValue<bool> SaveWarpTargets = new SaveValue<bool>("SaveWarpTargets", true);
         public static SaveValue<bool> SaveCrewAllowance = new SaveValue<bool>("SaveCrewAllowance", true);
         public static SaveValue<bool> SaveCaptainOrder = new SaveValue<bool>("SaveCaptainOrder", true);
+        public static SaveValue<bool> SaveCoolantPumpRate = new SaveValue<bool>("SaveCoolantPumpRate", true);
+        public static SaveValue<bool> SaveDistressSignal = new SaveValue<bool>("SaveDistressSignal", true);
+        public static SaveValue<bool> SaveBlindJumpLock = new SaveValue<bool>("SaveBlindJumpLock", true);
+        public static SaveValue<bool> SaveAmmoBoxSupply = new SaveValue<bool>("SaveAmmoBoxSupply", true);
+        public static SaveValue<bool> SaveReactorHeat = new SaveValue<bool>("SaveReactorHeat", true);
+        public static SaveValue<bool> SaveShipPosition = new SaveValue<bool>("SaveShipPosition", true);
     }
 }

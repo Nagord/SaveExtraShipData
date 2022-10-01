@@ -9,19 +9,11 @@ namespace SaveExtraShipData
             return "ExtraShipData Save Options";
         }
 
-        public override void OnOpen()
-        {
-            if (PLServer.Instance == null)
-            {
-                SaveExtraShipData.SavePerFile = true;
-                SaveExtraShipData.LoadGlobalSettings();
-            }
-        }
-
+        //UnityEngine.GUILayoutOption[] defaultOptions = new UnityEngine.GUILayoutOption[] { UnityEngine.GUILayout.Width(.5f)};
         public override void Draw()
         {
             BeginHorizontal();
-            if (Button("Save settings to this game file:" + (SaveExtraShipData.SavePerFile ? "<color=blue>On</color>" : "<color=blue>Off</color>")))
+            if (Button("Settings: " + (SaveExtraShipData.SavePerFile ? "<color=blue>Local</color>" : "<color=blue>Global</color>")))
             {
                 SaveExtraShipData.SavePerFile = !SaveExtraShipData.SavePerFile;
                 if(!SaveExtraShipData.SavePerFile)
@@ -29,10 +21,13 @@ namespace SaveExtraShipData
                     SaveExtraShipData.LoadGlobalSettings();
                 }
             }
-            GlobalConfigSettings.SavePerFileDefault.Value = Toggle(GlobalConfigSettings.SavePerFileDefault.Value, "Default");
+            if (Button("Default Settings: " + (GlobalConfigSettings.SavePerFileDefault ? "<color=aqua>Local</color>" : "<color=aqua>Global</color>")))
+            {
+                GlobalConfigSettings.SavePerFileDefault.Value = !GlobalConfigSettings.SavePerFileDefault.Value;
+            }
             EndHorizontal();
-
-            if (Button("Save O2 Level:" + (SaveExtraShipData.SaveO2Level ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            BeginHorizontal();
+            if (Button("Save O2 Level: " + (SaveExtraShipData.SaveO2Level ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveO2Level = !SaveExtraShipData.SaveO2Level;
                 if(!SaveExtraShipData.SavePerFile)
@@ -40,7 +35,7 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveO2Level.Value = SaveExtraShipData.SaveO2Level;
                 }
             }
-            if (Button("Save Biohazard Level:" + (SaveExtraShipData.SaveBiohazardLevel ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            if (Button("Save Biohazard Level: " + (SaveExtraShipData.SaveBiohazardLevel ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveBiohazardLevel = !SaveExtraShipData.SaveBiohazardLevel;
                 if (!SaveExtraShipData.SavePerFile)
@@ -48,7 +43,9 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveBiohazardLevel.Value = SaveExtraShipData.SaveBiohazardLevel;
                 }
             }
-            if (Button("Save Warp Charge:" + (SaveExtraShipData.SaveWarpCharge ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            EndHorizontal();
+            BeginHorizontal();
+            if (Button("Save Warp Charge: " + (SaveExtraShipData.SaveWarpCharge ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveWarpCharge = !SaveExtraShipData.SaveWarpCharge;
                 if (!SaveExtraShipData.SavePerFile)
@@ -56,7 +53,7 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveWarpCharge.Value = SaveExtraShipData.SaveWarpCharge;
                 }
             }
-            if (Button("Save Auto Targeting:" + (SaveExtraShipData.SaveAutoTargeting ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            if (Button("Save Auto Targeting: " + (SaveExtraShipData.SaveAutoTargeting ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveAutoTargeting = !SaveExtraShipData.SaveAutoTargeting;
                 if (!SaveExtraShipData.SavePerFile)
@@ -64,7 +61,9 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveAutoTargeting.Value = SaveExtraShipData.SaveAutoTargeting;
                 }
             }
-            if (Button("Save Shield Status:" + (SaveExtraShipData.SaveShieldStatus ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            EndHorizontal();
+            BeginHorizontal();
+            if (Button("Save Shield Status: " + (SaveExtraShipData.SaveShieldStatus ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveShieldStatus = !SaveExtraShipData.SaveShieldStatus;
                 if (!SaveExtraShipData.SavePerFile)
@@ -72,7 +71,7 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveShieldStatus.Value = SaveExtraShipData.SaveShieldStatus;
                 }
             }
-            if (Button("Save Shield Integrity:" + (SaveExtraShipData.SaveShieldIntegrity ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            if (Button("Save Shield Integrity: " + (SaveExtraShipData.SaveShieldIntegrity ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveShieldIntegrity = !SaveExtraShipData.SaveShieldIntegrity;
                 if (!SaveExtraShipData.SavePerFile)
@@ -80,7 +79,9 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveShieldIntegrity.Value = SaveExtraShipData.SaveShieldIntegrity;
                 }
             }
-            if (Button("Save Reactor Power Settings:" + (SaveExtraShipData.SaveReactorPowerSettings ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            EndHorizontal();
+            BeginHorizontal();
+            if (Button("Save Reactor Power Settings: " + (SaveExtraShipData.SaveReactorPowerSettings ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveReactorPowerSettings = !SaveExtraShipData.SaveReactorPowerSettings;
                 if (!SaveExtraShipData.SavePerFile)
@@ -88,7 +89,7 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveReactorPowerSettings.Value = SaveExtraShipData.SaveReactorPowerSettings;
                 }
             }
-            if (Button("Save Reactor OC Status:" + (SaveExtraShipData.SaveReactorOCStatus ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            if (Button("Save Reactor OC Status: " + (SaveExtraShipData.SaveReactorOCStatus ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveReactorOCStatus = !SaveExtraShipData.SaveReactorOCStatus;
                 if (!SaveExtraShipData.SavePerFile)
@@ -96,7 +97,9 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveReactorOCStatus.Value = SaveExtraShipData.SaveReactorOCStatus;
                 }
             }
-            if (Button("Save Aux Reactor Config:" + (SaveExtraShipData.SaveAuxReactor ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            EndHorizontal();
+            BeginHorizontal();
+            if (Button("Save Aux Reactor Config: " + (SaveExtraShipData.SaveAuxReactor ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveAuxReactor = !SaveExtraShipData.SaveAuxReactor;
                 if (!SaveExtraShipData.SavePerFile)
@@ -104,7 +107,7 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveAuxReactor.Value = SaveExtraShipData.SaveAuxReactor;
                 }
             }
-            if (Button("Save System Health Levels:" + (SaveExtraShipData.SaveSystemHealthLevels ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            if (Button("Save System Health Levels: " + (SaveExtraShipData.SaveSystemHealthLevels ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveSystemHealthLevels = !SaveExtraShipData.SaveSystemHealthLevels;
                 if (!SaveExtraShipData.SavePerFile)
@@ -112,7 +115,9 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveSystemHealthLevels.Value = SaveExtraShipData.SaveSystemHealthLevels;
                 }
             }
-            if (Button("Save Cloak State:" + (SaveExtraShipData.SaveCloakState ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            EndHorizontal();
+            BeginHorizontal();
+            if (Button("Save Cloak State: " + (SaveExtraShipData.SaveCloakState ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveCloakState = !SaveExtraShipData.SaveCloakState;
                 if (!SaveExtraShipData.SavePerFile)
@@ -120,7 +125,7 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveCloakState.Value = SaveExtraShipData.SaveCloakState;
                 }
             }
-            if (Button("Save Nuclear Device Status:" + (SaveExtraShipData.SaveNuclearDeviceStatus ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            if (Button("Save Nuclear Device Status: " + (SaveExtraShipData.SaveNuclearDeviceStatus ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveNuclearDeviceStatus = !SaveExtraShipData.SaveNuclearDeviceStatus;
                 if (!SaveExtraShipData.SavePerFile)
@@ -128,7 +133,9 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveNuclearDeviceStatus.Value = SaveExtraShipData.SaveNuclearDeviceStatus;
                 }
             }
-            if (Button("Save Missile Launcher Setup:" + (SaveExtraShipData.SaveMissileLauncherSetup ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            EndHorizontal();
+            BeginHorizontal();
+            if (Button("Save Missile Launcher Setup: " + (SaveExtraShipData.SaveMissileLauncherSetup ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveMissileLauncherSetup = !SaveExtraShipData.SaveMissileLauncherSetup;
                 if (!SaveExtraShipData.SavePerFile)
@@ -136,7 +143,7 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveMissileLauncherSetup.Value = SaveExtraShipData.SaveMissileLauncherSetup;
                 }
             }
-            if (Button("Save Ship Power Levers:" + (SaveExtraShipData.SaveShipPowerLevers ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            if (Button("Save Ship Power Levers: " + (SaveExtraShipData.SaveShipPowerLevers ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveShipPowerLevers = !SaveExtraShipData.SaveShipPowerLevers;
                 if (!SaveExtraShipData.SavePerFile)
@@ -144,7 +151,9 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveShipPowerLevers.Value = SaveExtraShipData.SaveShipPowerLevers;
                 }
             }
-            if (Button("Save Reactor Safety Toggle:" + (SaveExtraShipData.SaveReactorSafetyToggle ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            EndHorizontal();
+            BeginHorizontal();
+            if (Button("Save Reactor Safety Toggle: " + (SaveExtraShipData.SaveReactorSafetyToggle ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveReactorSafetyToggle = !SaveExtraShipData.SaveReactorSafetyToggle;
                 if (!SaveExtraShipData.SavePerFile)
@@ -152,7 +161,7 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveReactorSafetyToggle.Value = SaveExtraShipData.SaveReactorSafetyToggle;
                 }
             }
-            if (Button("Save Ship Alert Level:" + (SaveExtraShipData.SaveShipAlertLevel ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            if (Button("Save Ship Alert Level: " + (SaveExtraShipData.SaveShipAlertLevel ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveShipAlertLevel = !SaveExtraShipData.SaveShipAlertLevel;
                 if (!SaveExtraShipData.SavePerFile)
@@ -160,7 +169,9 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveShipAlertLevel.Value = SaveExtraShipData.SaveShipAlertLevel;
                 }
             }
-            if (Button("Save Warp Targets:" + (SaveExtraShipData.SaveWarpTargets ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            EndHorizontal();
+            BeginHorizontal();
+            if (Button("Save Warp Targets: " + (SaveExtraShipData.SaveWarpTargets ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveWarpTargets = !SaveExtraShipData.SaveWarpTargets;
                 if (!SaveExtraShipData.SavePerFile)
@@ -168,7 +179,7 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveWarpTargets.Value = SaveExtraShipData.SaveWarpTargets;
                 }
             }
-            if (Button("Save Crew Allowance:" + (SaveExtraShipData.SaveCrewAllowance ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            if (Button("Save Crew Allowance: " + (SaveExtraShipData.SaveCrewAllowance ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveCrewAllowance = !SaveExtraShipData.SaveCrewAllowance;
                 if (!SaveExtraShipData.SavePerFile)
@@ -176,12 +187,67 @@ namespace SaveExtraShipData
                     GlobalConfigSettings.SaveCrewAllowance.Value = SaveExtraShipData.SaveCrewAllowance;
                 }
             }
-            if (Button("Save Captain Order:" + (SaveExtraShipData.SaveCaptainOrder ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            EndHorizontal();
+            BeginHorizontal();
+            if (Button("Save Captain Order: " + (SaveExtraShipData.SaveCaptainOrder ? "<color=green>On</color>" : "<color=red>Off</color>")))
             {
                 SaveExtraShipData.SaveCaptainOrder = !SaveExtraShipData.SaveCaptainOrder;
                 if (!SaveExtraShipData.SavePerFile)
                 {
                     GlobalConfigSettings.SaveCaptainOrder.Value = SaveExtraShipData.SaveCaptainOrder;
+                }
+            }
+            if (Button("Save Coolant Pump Rate: " + (SaveExtraShipData.SaveCoolantPumpRate ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            {
+                SaveExtraShipData.SaveCoolantPumpRate = !SaveExtraShipData.SaveCoolantPumpRate;
+                if (!SaveExtraShipData.SavePerFile)
+                {
+                    GlobalConfigSettings.SaveCoolantPumpRate.Value = SaveExtraShipData.SaveCoolantPumpRate;
+                }
+            }
+            EndHorizontal();
+            BeginHorizontal();
+            if (Button("Save Distress Signal: " + (SaveExtraShipData.SaveDistressSignal ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            {
+                SaveExtraShipData.SaveDistressSignal = !SaveExtraShipData.SaveDistressSignal;
+                if (!SaveExtraShipData.SavePerFile)
+                {
+                    GlobalConfigSettings.SaveDistressSignal.Value = SaveExtraShipData.SaveDistressSignal;
+                }
+            }
+            if (Button("Save Blind Jump Lock: " + (SaveExtraShipData.SaveBlindJumpLock ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            {
+                SaveExtraShipData.SaveBlindJumpLock = !SaveExtraShipData.SaveBlindJumpLock;
+                if (!SaveExtraShipData.SavePerFile)
+                {
+                    GlobalConfigSettings.SaveBlindJumpLock.Value = SaveExtraShipData.SaveBlindJumpLock;
+                }
+            }
+            EndHorizontal();
+            BeginHorizontal();
+            if (Button("Save Ammo Box Supply: " + (SaveExtraShipData.SaveAmmoBoxSupply ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            {
+                SaveExtraShipData.SaveAmmoBoxSupply = !SaveExtraShipData.SaveAmmoBoxSupply;
+                if (!SaveExtraShipData.SavePerFile)
+                {
+                    GlobalConfigSettings.SaveAmmoBoxSupply.Value = SaveExtraShipData.SaveAmmoBoxSupply;
+                }
+            }
+            if (Button("Save Reactor Heat: " + (SaveExtraShipData.SaveReactorHeat ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            {
+                SaveExtraShipData.SaveReactorHeat = !SaveExtraShipData.SaveReactorHeat;
+                if (!SaveExtraShipData.SavePerFile)
+                {
+                    GlobalConfigSettings.SaveReactorHeat.Value = SaveExtraShipData.SaveReactorHeat;
+                }
+            }
+            EndHorizontal();
+            if (Button("Save Ship Position: " + (SaveExtraShipData.SaveShipPosition ? "<color=green>On</color>" : "<color=red>Off</color>")))
+            {
+                SaveExtraShipData.SaveShipPosition = !SaveExtraShipData.SaveShipPosition;
+                if (!SaveExtraShipData.SavePerFile)
+                {
+                    GlobalConfigSettings.SaveShipPosition.Value = SaveExtraShipData.SaveShipPosition;
                 }
             }
         }

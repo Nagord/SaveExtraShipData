@@ -9,6 +9,10 @@ namespace SaveExtraShipData
     {
         static void Postfix()
         {
+            if(SaveExtraShipData.CachedDataInstance == null)
+            {
+                return;
+            }
             PLShipInfo playership = PLEncounterManager.Instance.PlayerShip;
             if (SaveExtraShipData.SaveAutoTargeting)
             {
@@ -138,6 +142,42 @@ namespace SaveExtraShipData
             if (SaveExtraShipData.SaveCaptainOrder)
             {
                 PLServer.Instance.CaptainsOrdersID = SaveExtraShipData.CachedDataInstance.CaptainOrderID;
+            }
+            if (SaveExtraShipData.SaveCoolantPumpRate)
+            {
+                playership.ReactorCoolingPumpState = SaveExtraShipData.CachedDataInstance.CoolantPumpRate;
+            }
+            if (SaveExtraShipData.SaveDistressSignal)
+            {
+                foreach(PLDistressSignal item in playership.MyStats.GetSlot(ESlotType.E_COMP_DISTRESS_SIGNAL))
+                {
+                    if(item.SubType == SaveExtraShipData.CachedDataInstance.DistressSignalType)
+                    {
+                        playership.SelectedDistressSignalNetID = item.NetID;
+                        break;
+                    }
+                }
+                playership.DistressSignalActive = SaveExtraShipData.CachedDataInstance.DistressSignalActive;
+            }
+            if (SaveExtraShipData.SaveBlindJumpLock)
+            {
+                playership.BlindJumpUnlocked = SaveExtraShipData.CachedDataInstance.BlindJumpUnlocked;
+            }
+            if (SaveExtraShipData.SaveAmmoBoxSupply)
+            {
+                for (int i = 0; i < SaveExtraShipData.CachedDataInstance.AmmoSupplys.Length; i++)
+                {
+                    playership.MyAmmoRefills[i].SupplyAmount = SaveExtraShipData.CachedDataInstance.AmmoSupplys[i];
+                }
+            }
+            if (SaveExtraShipData.SaveReactorHeat)
+            {
+                playership.MyStats.ReactorTempCurrent = SaveExtraShipData.CachedDataInstance.ReactorHeat;
+            }
+            if (SaveExtraShipData.SaveShipPosition)
+            {
+                playership.ExteriorRigidbody.position = SaveExtraShipData.CachedDataInstance.ShipPosition;
+                playership.ExteriorRigidbody.rotation = SaveExtraShipData.CachedDataInstance.ShipRotation;
             }
             if (!SaveExtraShipData.SavePerFile)
             {
