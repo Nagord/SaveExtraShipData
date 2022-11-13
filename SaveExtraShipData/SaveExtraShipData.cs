@@ -1,5 +1,4 @@
-﻿using PulsarModLoader.Utilities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -456,7 +455,14 @@ namespace SaveExtraShipData
                 writer.Write(SaveDistressSignal);           //bool SaveDistressSignal
                 if (SaveDistressSignal)
                 {
-                    writer.Write((byte)playerShip.MyStats.GetComponentFromNetID(playerShip.SelectedDistressSignalNetID).SubType);
+                    if (playerShip.SelectedDistressSignalNetID == -1)
+                    {
+                        writer.Write(byte.MaxValue);
+                    }
+                    else
+                    {
+                        writer.Write((byte)playerShip.MyStats.GetComponentFromNetID(playerShip.SelectedDistressSignalNetID).SubType);
+                    }
                     writer.Write(playerShip.DistressSignalActive);
                 }
                 writer.Write(SaveBlindJumpLock);            //bool SaveBlindJumpLock

@@ -149,15 +149,18 @@ namespace SaveExtraShipData
             }
             if (SaveExtraShipData.SaveDistressSignal)
             {
-                foreach(PLDistressSignal item in playership.MyStats.GetSlot(ESlotType.E_COMP_DISTRESS_SIGNAL))
+                if (SaveExtraShipData.CachedDataInstance.DistressSignalType != byte.MaxValue)
                 {
-                    if(item.SubType == SaveExtraShipData.CachedDataInstance.DistressSignalType)
+                    foreach (PLDistressSignal item in playership.MyStats.GetSlot(ESlotType.E_COMP_DISTRESS_SIGNAL))
                     {
-                        playership.SelectedDistressSignalNetID = item.NetID;
-                        break;
+                        if (item.SubType == SaveExtraShipData.CachedDataInstance.DistressSignalType)
+                        {
+                            playership.SelectedDistressSignalNetID = item.NetID;
+                            break;
+                        }
                     }
+                    playership.DistressSignalActive = SaveExtraShipData.CachedDataInstance.DistressSignalActive;
                 }
-                playership.DistressSignalActive = SaveExtraShipData.CachedDataInstance.DistressSignalActive;
             }
             if (SaveExtraShipData.SaveBlindJumpLock)
             {
