@@ -22,7 +22,7 @@ namespace SaveExtraShipData
             {
                 playership.ShieldFreqMode = SaveExtraShipData.CachedDataInstance.ShieldFrequency;
             }
-            if (SaveExtraShipData.SaveShieldIntegrity)
+            if (SaveExtraShipData.SaveShieldIntegrity && playership.MyShieldGenerator != null)
             {
                 playership.MyShieldGenerator.Current = SaveExtraShipData.CachedDataInstance.ShieldIntegrity;
             }
